@@ -1,0 +1,46 @@
+Here follows a list of terms that were used in this text, including an explaination of them:
+
+*	MODEL:	This is the MODEL. The MODEL explains how Quartz works internally and externally.
+
+*	IMPLEMENTATION:	The way this MODEL is implemented.
+
+*	PROTOCOL:	The PROTOCOL is part of the IMPLEMENTATION and implements this MODEL. Any application that uses the same PROTOCOL will be able to work with Quartz.
+
+*	URL:	An Uniform Resource Locator specified by RFC 3986.
+
+*	DATA:	A string of bytes.
+
+*	HASH:	A hash-computation of a set of DATA. Quartz uses a hash-function almost identical to SHA-1, except that SHA-1 (among other hash-functions) are designed to compute one final hash-code. Our modified version of SHA-1 is designed to be able to output an hash-code at any point of processing the message. In another words, our hash-function is able to compute an hash-code for one half of the message, and is then able to process the second half of the message with the previously computed hash-code, outputting a final hashcode that would be identical if the whole message would have been processed in one computation.
+	This is useful for when we want to compute a new hash-code that is based on the old hash-code when the message of the old hash-code is not known but you still want to compute the new hash-code as if it included that old message.
+	The definition of our hash-function is explained in documentation file "hash.txt", and is not IMPLEMENTATION specific.
+
+*	FILE:	A 'blob' of DATA, at a certain URL. A FILE is identified by it's path (URL) and an HASH of the DATA.
+
+*	SUB-DIRECTORY:	A SUB-DIRECTORY is belongs to the (root) DIRECTORY, or a SUB-DIRECTORY. A SUB-DIRECTORY is identified by its path (URL) and an HASH based on the PATHS and HASHES of the FILES, SUB-DIRECTORIES and LINKS it contains.
+
+*	LINKS:	A LINK contains a path (URL). A LINK is identified by it's own path (URL) and an HASH of the path it contains. This is also known as an hard-link.
+
+*	DIRECTORY:	The DIRECTORY describes how FILES, SUB-DIRECTORIES and LINKS are organized and what DATA the FILES contain.
+
+*	PIECE:	A part of a FILE. A PIECE starts at a certain point in the FILE and ends at another point in the FILE that is at least one byte more than its starting position and less than or equal to the FILE's size. The IMPLEMENTATION defines how a piece is identified, but it is recommended to either identify them by their starting position and end position, or their starting position and size.
+
+*	CHUNK:	A CHUNK is the DATA of a PIECE of a FILE.
+
+*	PIECE-UPDATE:	A PIECE that has been changed within a FILE. A PIECE-UPDATE is identifed by what PIECE has been removed and what new CHUNK fills its place. The CHUNK may be different in size than the PIECE it replaces.
+
+*	BLOCK:	A BLOCK is a part of the CHUNK of the new PIECE within a PIECE-UPDATE. The size of a BLOCK may only be less than or equal to the size of the CHUNK.
+
+*	UPDATE:	One or more PIECE-UPDATES of a FILE. In the case that the UPDATE contains two or more PIECE-UPDATES, one PIECE-UPDATE may not be too close to another PIECE-UPDATE. Two PIECE-UPDATES are too close when the number of bytes that seperates them, is less than or equal to the amount of bytes the IMPLEMENTATION uses to identify a PIECE-UPDATE.
+	For example, if the IMPLEMENTATION uses two 64-bit integers to describe the starting point and the size of a PIECE-UPDATE, two PIECE-UPDATES must have at least 17 (8 + 8 + 1) bytes in between them.
+
+*	CHANGE:	A change decribes that either a FILE, a SUB-DIRECTORY, or a LINK has been added or removed, or it describes that a PIECE of a FILE as been UPDATED.
+
+*	CHANGESET:	A set of CHANGES that describe what has changed as opposed to the previous state the DIRECTORY was in.
+
+*	SNAPSHOT:	How the DIRECTORY looks like when all CHANGESETS are applied. A.k.a. the state the DIRECTORY is in at a certain CHANGESET.
+
+*	NODE:	A NODE is a place where his FRAGMENT of the HISTORY is managed.
+
+*	COMMUNICATION:	Most NODES will be able to communicate with another NODE. This is usually achieved over a network. When a NODE is able to communcate with another NODE, it is not obligatory to do so. Each note is completely free in choosing to communicate with someone.
+
+TODO:	Explain structure/data push/pull requests/responses.
