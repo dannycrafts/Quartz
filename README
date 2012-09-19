@@ -1,0 +1,3 @@
+Quartz is an application that manages a fragmented history of changesets. This information can be shared with - or requested from other peers, without the use of some centralized service. Quartz is basically a decentralized file-sharing application with versioning control.
+
+To learn more about Quartz' model, take a look at "doc/model.txt".
